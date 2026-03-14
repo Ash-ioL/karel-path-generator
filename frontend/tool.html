@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home - Karel Code Generator</title>
+        <title>Tool - Karel Code Generator</title>
         <link rel="icon" src="images/favicon.png">
         <style>
             @import "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap";
@@ -20,35 +20,61 @@
             }
             body {
                 display: flex;
-                flex-direction: row;
                 min-height: 100vh;
                 width: 100%;
+                align-items: center;
+                justify-content: center;
                 /*background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.569) 0%, white 60%);*/
             }
+            #alignment {
+                aspect-ratio: 3 / 2;
+                width: 100vw;
+                max-height: 100vh;
+                height: auto;
+                background-color: aquamarine;
+            }
+            @media (orientation: portrait) {
+                #alignment {
+                    aspect-ratio: 4 / 5;
+                    height: 100vh;
+                    max-width: 100vw;
+                    width: auto;
+                }
+            }
             canvas {
-                border: 2px solid #333;
+                /* border: 2px solid #333;
                 background-color: white;
+                width: 100vmin;
+                height: 100vmin;
+                aspect-ratio: 1 / 1;
+                background-color: red; */
             }
-            @media (max-width: 600px) {
-                
+        /* @media(width > height) {
+            /* canvas {
+                width: 100vh;
+                aspect-ratio: 1 / 1;
             }
+        } */
+        
+        /* @media (max-width: 600px) {
+            
+        } */
         </style>
     </head>
     <body>
-        <!--<canvas id="grid" width="tobereplaced1" height="tobereplaced2"></canvas>-->
-        <canvas id="grid" width="100">
-            Your browser does not support the HTML canvas tag.
-        </canvas>
+        <div id = "alignment">
+            <canvas id="grid">
+                Your browser does not support the HTML canvas tag.
+            </canvas>
+            <div id="settings">
+
+            </div>
+        </div>
 
         <script>
-            let c = document.getElementById("myCanvas");
-            let numrows = 9;
-            let numcols = 7;
-            if (numrows > numcols) {
-                c.style.width = (c.width/numrows)*numcols
-            } else {
-                c.style.height = (c.height/numcols)*numrows
-            }
+            let c = document.getElementById("grid");
+            c.width = 1;
+            c.height = 1;
         </script>
     </body>
 </html>
