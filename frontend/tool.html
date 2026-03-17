@@ -101,7 +101,7 @@
                     this.history = []
                 }
                 getPose() {
-                    return [x, y];
+                    return [this.x, this.y];
                 }
                 move() {
                     if (this.direction === "n") {
@@ -205,11 +205,11 @@
 
 
                     // Recompute coords
-                    for (let i of Intersection.city) {
-                        for (let k of i) {
-                            k.reset();
-                        }
-                    }
+                    // for (let i of Intersection.city) {
+                    //     for (let k of i) {
+                    //         k.reset();
+                    //     }
+                    // }
                     console.log(Intersection.city);
                 }
                 // problem: canvas origin not in same place as karel's - FIXED
@@ -228,9 +228,10 @@
                     this.street = street;
                     this.width = Intersection.blockWidth;
                     this.numBeepers = parseInt(content[0]);
-                    this.horizontalWall = content[1] == "1";
-                    this.verticalWall = content[2] == "1";
+                    this.horizontalWall = content[1] === "1";
+                    this.verticalWall = content[2] === "1";
                     this.coords = [avenue*Intersection.blockWidth, ((Intersection.streets-1)-street)*Intersection.blockWidth];
+                    this.hasRobot = robot.getPose() === this.coords;
                 }
                 reset() {
                     this.coords = [this.avenue*Intersection.blockWidth, ((Intersection.streets-1)-this.street)*Intersection.blockWidth];
@@ -238,8 +239,8 @@
                 }
                 setContent(content) {
                     this.numBeepers = parseInt(content[0]);
-                    this.horizontalWall = content[1] == "1";
-                    this.verticalWall = content[2] == "1";
+                    this.horizontalWall = content[1] === "1";
+                    this.verticalWall = content[2] === "1";
                 }
                 increaseBeeper(num) {
                     for (let i = 0; i < num; i++) {
@@ -266,7 +267,7 @@
                     return this.coords[1]+Intersection.blockWidth;
                 }
                 draw() {
-                    reset();
+                    this.reset();
                     ctx.beginPath();
                     ctx.strokeStyle = "red";
                     ctx.lineWidth = 2;
@@ -275,26 +276,10 @@
 
                     ctx.moveTo(center[0], this.minY());
                     ctx.lineTo(center[0], this.maxY());
-                    if (this.verticalWall) {
-                        ctx.lineWidth = 4;
-                        ctx.strokeStyle = "black";
-                        ctx.stroke();
-                        ctx.beginPath();
-                        ctx.strokeStyle = "red";
-                        ctx.lineWidth = 2;
-                    }
                     ctx.moveTo(this.minX(), center[1]);
                     ctx.lineTo(this.maxX(), center[1]);
-                    if (this.horizontalWall) {
-                        ctx.lineWidth = 4;
-                        ctx.strokeStyle = "black";
-                        ctx.stroke();
-                        ctx.beginPath();
-                        ctx.strokeStyle = "red";
-                        ctx.lineWidth = 2;
-                    }
                     ctx.stroke();
-                    if (this.content == "r") {
+                    if (this.content === "r") {
                         ctx.arc(this.position(0, 0)[0], this.position(0, 0)[1], this.width/4, 0, Math.PI*2);
                     }
                     ctx.stroke();
