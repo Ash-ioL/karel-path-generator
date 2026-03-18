@@ -105,7 +105,7 @@
                 }
                 resetIntersection(grid, xOffset, yOffset) {
                     try {
-                        grid[this.y+yOffset][this.x+xOffset].reset();
+                        grid[this.y+yOffset][this.x+xOffset].reset(false);
                     } catch {
                         //nothing
                     }
@@ -160,7 +160,7 @@
                     this.history.push("b");
                 }
             }
-            robot = new Robot(0, 0, "n", 4, "red");
+            robot = new Robot(0, 0, "e", 4, "red");
 
             class Intersection {
                 static avenues = 10;
@@ -172,10 +172,10 @@
                 // v is similar to h 
                 static blockWidth = dimensionBasis/Math.max(Intersection.avenues, Intersection.streets);
 
-                static drawAll() {
+                static resetAll() {
                     for (let i of Intersection.city) {
                         for (let k of i) {
-                            k.reset();
+                            k.reset(true);
                         }
                     }
                 }
@@ -248,9 +248,11 @@
                     this.hasRobot = robot.getPose()[0] === this.avenue && robot.getPose()[1] === this.street;
                 }
                 // clear the intersection before drawing instead of overlapping
-                reset() {
-                    ctx.clearRect(this.minX(), this.minY(), this.width, this.width);
-                    
+                reset(redraw) {
+                    if (!redraw) {
+                        ctx.clearRect(this.minX(), this.minY(), this.width, this.width);
+                    }
+
                     this.coords = [this.avenue*Intersection.blockWidth, ((Intersection.streets-1)-this.street)*Intersection.blockWidth];
                     this.width = Intersection.blockWidth;
                     this.hasRobot = robot.getPose()[0] === this.avenue && robot.getPose()[1] === this.street;
@@ -316,7 +318,7 @@
                 }
             }
             Intersection.initializeCity();
-            Intersection.resizeCity(3, 4); // make sure not to resize before initialized
+            Intersection.resizeCity(9, 4); // make sure not to resize before initialized
             Intersection.city[0][0].setContent("000");
             Intersection.city[1][1].setContent("011");
             // robot.move();
@@ -350,7 +352,7 @@
                 }
                 console.log(`Key press detected: ${e.key}`);
             });
-            Intersection.drawAll();
+            Intersection.resetAll();
         </script>
     </body>
 </html>
