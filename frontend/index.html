@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Home - Karel Code Generator</title>
-        <link rel="icon" src="/frontend/images/favicon.png">
+        <link rel="icon" href="/frontend/images/favicon.png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double+Ink:wght@100..900&family=Bitcount+Prop+Double:wght@100..900&display=swap" rel="stylesheet">
@@ -35,6 +35,15 @@
                 gap: 20vh;
                 padding: 0 1.5vw;
             }
+            div#left img {
+                width: 4rem;
+                aspect-ratio: 1 / 1;
+                user-select: none;
+                transition: all 0.3s ease-in-out;
+            }
+            div#left img:hover {
+                transform: scale(1.1) rotateZ(20deg);
+            }
             div#right {
                 height: 100vh;
                 flex: 1;
@@ -53,7 +62,7 @@
                 font-family: "Bitcount Prop Double";
                 color: rgb(0, 0, 0);
                 font-weight: 400;
-                font-size: 4rem;
+                font-size: clamp(2.7rem, 6vw, 4rem);
                 text-align: center;
             }
             div#left h2 {
@@ -161,14 +170,21 @@
             }
 
             @media (max-width: 600px) {
+                body {
+                    flex-direction: column;
+                }
                 div#right a {
                     font-size: 1.2rem;
+                    margin-top: 5vh;
+                }
+                div#right p {
+                    margin-bottom: 5vh;
                 }
                 div#left h1 {
-                    font-size: 2.5rem;
+                    font-size: 2.9rem;
                 }
-                div#left h2 {
-                    font-size: 0.7rem;
+                div#left img {
+                    width: 3rem;
                 }
 
                 div#right p {
@@ -177,13 +193,28 @@
                 div#right ul {
                     font-size: 1.7rem;
                 }
+
+                
+                
+                body {
+                    flex-direction: column;
+                }
+                div#left {
+                    height: 50vh;
+                    gap: 7vh;
+                    padding: 2.5vh 0;
+                }
+                div#right {
+                    height: 50vh;
+                }
             }
         </style>
     </head>
     <body>
         <div id="left">
-            <h1>Karel Path Generator</h1>
-            <h2>By <a href="https://github.com/Ash-ioL">Ash-ioL</a></h2>
+            <h1>Karelography</h1>
+            <h2>By <a href="https://github.com/Ash-ioL" target="_blank">Ash-ioL</a></h2>
+            <a href="https://github.com/Ash-ioL/karelography" target="_blank"><img src="/frontend/images/github_logo.png"></a>
         </div>
         <div id="right">
             <p>Generate your robot paths</p>
