@@ -204,12 +204,12 @@
                 }
                 putBeeper() {
                     Intersection.city[this.y][this.x].increaseBeeper(1);
-                    this.history.push("b");
+                    this.history.push("o");
                     this.resetIntersection(Intersection.city, 0, 0);
                 }
                 pickBeeper() {
                     success = Intersection.city[this.y][this.x].decreaseBeeper(1);
-                    if (success) this.history.push("b");
+                    if (success) this.history.push("i");
                     this.resetIntersection(Intersection.city, 0, 0);
                 }
                 draw(center, blockWidth) {
@@ -266,61 +266,32 @@
                     }
                 }
                 static resizeCity(newStreets, newAvenues) { 
-                    if (newStreets <= 0 ) {
-                        newStreets = 1;
-                    }
-                    if (newAvenues <= 0) {
-                        newAvenues = 1;
-                    }
-                    Intersection.streets = newStreets;
-                    Intersection.avenues = newAvenues;
-
-                    Intersection.blockWidth = dimensionBasis/Math.max(newAvenues, newStreets);
-                    c.width = Intersection.blockWidth*newAvenues;
-                    c.height = Intersection.blockWidth*newStreets;
-                    c.style.width = `${100*newAvenues/Math.max(newAvenues, newStreets)}cqw`;
-                    c.style.height = `${100*newStreets/Math.max(newAvenues, newStreets)}cqh`;
-
-                    if (Intersection.city.length > 0) {
-                        Intersection.city = Intersection.city.slice(0, newStreets);
-
-                        for (let i = 0; i < newStreets; i++) {
-                            Intersection.city[i] = Intersection.city[i].slice(0, newAvenues);
-                        }
-                    }
-
-
-                    for (let i = 0; i < newAvenues - Intersection.city[0].length; i++) {
-                        for (let k = 0; k < Intersection.city.length; k++) {
-                            Intersection.city[k].push(new Intersection(Intersection.city[k].length, k, "000"));
-                        }
-                    }
-
-                    for (let i = 0; i < newStreets-Intersection.city.length; i++) {
-                        street = [];
-                        for (let k = 0; k < newAvenues; k++){
-                            street.push(new Intersection(k, Intersection.city.length, "000"));
-                        }
-                        Intersection.city.push(street);
-                    }
-
-                    Intersection.resetAll();
+                    
                     console.log(Intersection.city);
                 }
                 // problem: canvas origin not in same place as karel's - FIXED
                 static initializeCity() {
                     Intersection.city = [];
-                    for (let i = 0; i < Intersection.streets; i++) {
+                    for (let i = 0; i < Intersection.streets+1; i++) {
                         let street = [];
-                        for (let k = 0; k < Intersection.avenues; k++) {
-                            street.push(new Intersection(k, i, "000"));
+                        for (let k = 0; k < Intersection.avenues+1; k++) {
+                            if (k === Intersection.avenues) {
+                                street.push(new Intersection(k, i, true));
+                            } else {
+                                street.push(new Intersection(k, i, i === Intersection.streets ? true : false));
+                            }
+
                         }
                         Intersection.city.push(street);
                     }
+                    Intersection.avenues += 1;
+                    Intersection.streets += 1;
+                    Intersection.blockWidth = dimensionBasis/Math.max(Intersection.avenues, Intersection.streets)
                 }
-                constructor(avenue, street) { 
+                constructor(avenue, street, buffer) { 
                     this.avenue = avenue;
                     this.street = street;
+                    this.buffer = buffer;
                     this.width = Intersection.blockWidth;
                     this.numBeepers = 0;
                     this.horizontalWall = false;
@@ -405,6 +376,7 @@
                     // Draw the default grid lines
                     ctx.beginPath();
                     ctx.strokeStyle = "red";
+                    if (this.buffer) ctx.strokeStyle = "orange";
                     ctx.lineWidth = 2;
 
                     ctx.moveTo(center[0], this.minY());
@@ -473,7 +445,7 @@
                 images = await loadImages(source);
                 Intersection.initializeCity();
                 Intersection.resetAll();
-                Intersection.resizeCity(9, 4); // make sure not to resize before initialized
+                Intersection.resizeCity(10, 50); // make sure not to resize before initialized
                 Intersection.city[0][0].setContent("000");
                 Intersection.city[1][1].setContent("111");
                 console.log(Intersection.city[1][1].horizontalWall);
