@@ -203,13 +203,24 @@
                     this.resetIntersection(Intersection.city, 0, 0);
                 }
                 putBeeper() {
+                    if (Intersection.city[robot.x][robot.y].buffer) return;
+                    if (robot.numBeepers <= 0) return;
+                    robot.numBeepers -= 1;
                     Intersection.city[this.y][this.x].increaseBeeper(1);
                     this.history.push("o");
                     this.resetIntersection(Intersection.city, 0, 0);
                 }
                 pickBeeper() {
-                    success = Intersection.city[this.y][this.x].decreaseBeeper(1);
-                    if (success) this.history.push("i");
+                    if (this.isSprinting) {
+                        this.isSprinting = false;
+                        this.pickBeeper();
+                    }
+                    
+                    let success = Intersection.city[this.y][this.x].decreaseBeeper(1);
+                    if (success) {
+                        this.numBeepers += 1;
+                        this.history.push("i");
+                    }
                     this.resetIntersection(Intersection.city, 0, 0);
                 }
                 draw(center, blockWidth) {
@@ -222,8 +233,8 @@
                     } else {
                         var img = images["robot_west"]
                     }
-                    let botWidth = 0.7;
-                    let area = blockWidth * 0.7;
+                    let botWidth = 0.6;
+                    let area = blockWidth * botWidth;
                     let top_corner = [center[0]-0.5*area, center[1]-0.5*area];
                     ctx.drawImage(img, top_corner[0], top_corner[1], area, area);
                 }
@@ -296,7 +307,7 @@
                         }
                         newCity.push(street);
                     }
-                    bufferRow.push(new Intersection(bufferRow.length, newAvenues, true))
+                    bufferRow.push(new Intersection(bufferRow.length, newStreets, true))
 
                     let rowsToCheck = Math.min(newCity.length, oldCity.length);
                     let colsToCheck = Math.min(newCity[0].length, oldCity[0].length);
@@ -444,17 +455,6 @@
                     ctx.lineTo(this.maxX(), center[1]);
                     ctx.stroke();
 
-                    // Draw the robot if robot is on its square
-                    if (this.hasRobot) {
-                        // ctx.beginPath();
-                        // ctx.fillStyle = "white";
-                        // ctx.strokeStyle = "black";
-                        // ctx.arc(this.position(0, 0)[0], this.position(0, 0)[1], this.width/4, 0, Math.PI*2);
-                        robot.draw(center, this.width);
-                        // ctx.stroke();
-                        // ctx.fill();
-                    }
-
                     // Draw horizontal wall
                     if (this.horizontalWall) {
                         let img = images["horizontal_wall"]
@@ -489,13 +489,18 @@
 
                         ctx.drawImage(img, top_left[0]+width/2, top_left[1]+width/2, width, height);
                         
-                        ctx.font = "600 23px Inter";
+                        ctx.font = "600 "+this.width*0.21+"px Inter";
                         ctx.textAlign = "right";
                         ctx.textBaseline = "top";
                         ctx.fillStyle = "black";
                         ctx.strokeStyle = "black";
                         ctx.lineWidth = 5;
                         ctx.fillText(""+this.numBeepers, top_right[0]-0.15*this.width, top_right[1]+0.15*this.width);
+                    }
+
+                    // Draw the robot if robot is on its square
+                    if (this.hasRobot) {
+                        robot.draw(center, this.width);
                     }
                 }
             }
@@ -504,7 +509,7 @@
                 images = await loadImages(source);
                 Intersection.initializeCity();
                 Intersection.resetAll();
-                //Intersection.resizeCity(3, 5); // make sure not to resize before initialized
+                Intersection.resizeCity(10, 10); // make sure not to resize before initialized
                 Intersection.city[0][0].setContent("000");
                 Intersection.city[1][1].setContent("111");
                 console.log(Intersection.city[1][1].horizontalWall);
@@ -533,6 +538,12 @@
                     }
                     if (key == "e") {
                         robot.turnRight();
+                    }
+                    if (key == "x") {
+                        robot.putBeeper();
+                    }
+                    if (key == "z") {
+                        robot.pickBeeper();
                     }
                     console.log(`Key press detected: ${e.key}`);
                 });
