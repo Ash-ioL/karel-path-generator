@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Home - Karel Code Generator</title>
-        <link rel="icon" href="/frontend/images/karelography_logo.svg">
+        <link rel="icon" href="/frontend/images/logos_banners/karelography_logo.svg">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double+Ink:wght@100..900&family=Bitcount+Prop+Double:wght@100..900&display=swap" rel="stylesheet">
@@ -32,16 +32,16 @@
                 height: 100vh;
                 flex: 1;
                 background-color: transparent;
-                gap: 20vh;
+                gap: 15vh;
                 padding: 0 1.5vw;
             }
-            div#left img {
+            div#left img#github {
                 width: 4rem;
                 aspect-ratio: 1 / 1;
                 user-select: none;
                 transition: all 0.3s ease-in-out;
             }
-            div#left img:hover {
+            div#left img#github:hover {
                 transform: scale(1.1) rotateZ(20deg);
             }
             div#right {
@@ -65,7 +65,7 @@
                 align-items: center;
             }
             div#left div img#logo {
-                width: clamp(4rem, 1000vw, 10rem);
+                width: clamp(10rem, 20vw, 35vh);
                 aspect-ratio: 1 / 1;
             }
             
@@ -75,6 +75,7 @@
                 font-weight: 400;
                 font-size: clamp(2.7rem, 6vw, 4rem);
                 text-align: center;
+                display: none;
             }
             div#left h2 {
                 font-size: 1rem;
@@ -194,7 +195,7 @@
                 div#left h1 {
                     font-size: 2.9rem;
                 }
-                div#left img {
+                div#left img#github {
                     width: 3rem;
                 }
                 div#left div img#logo {
@@ -226,11 +227,11 @@
     <body>
         <div id="left">
             <div>
-            <img id="logo" src = "/frontend/images/karelography_logo.svg">
+            <img id="logo" src = "/frontend/images/logos_banners/karelography_vertical_banner_transparent.svg">
             <h1>Karelography</h1>
             </div>
             <h2>By <a href="https://github.com/Ash-ioL" target="_blank">Ash-ioL</a></h2>
-            <a href="https://github.com/Ash-ioL/karelography" target="_blank"><img src="/frontend/images/github_logo.png"></a>
+            <a href="https://github.com/Ash-ioL/karelography" target="_blank"><img id="github" src="/frontend/images/github_logo.png"></a>
         </div>
         <div id="right">
             <p>Generate your robot paths</p>
