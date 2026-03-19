@@ -54,7 +54,7 @@
             }
             canvas {
                 background-color: #ffffff;
-                border: none;
+                border: 2px solid black;
                 width: 100cqw;
                 height: 100cqh;
             }
@@ -140,11 +140,11 @@
                         this.x -= 1;
                         this.resetIntersection(Intersection.city, 1, 0);
                     }
-                    if (this.x >= 0 && this.x < Intersection.avenues && this.y >= 0 && this.y < Intersection.streets) {
+                    if (this.x >= 0 && this.x <= Intersection.avenues && this.y >= 0 && this.y <= Intersection.streets) {
                         this.history.push("m");
                     } else {
-                        this.x = Math.max(0, Math.min(Intersection.avenues-1, this.x));
-                        this.y = Math.max(0, Math.min(Intersection.streets-1, this.y));
+                        this.x = Math.max(0, Math.min(Intersection.avenues, this.x));
+                        this.y = Math.max(0, Math.min(Intersection.streets, this.y));
                     }
                     this.resetIntersection(Intersection.city, 0, 0);
                     console.log(`Direction = ${this.direction}, Coords = ${this.x}, ${this.y}`);
@@ -255,10 +255,12 @@
                 static avenues = 10;
                 static streets = 10;
                 static city = [];
+                static cityBufferless = [];
                 
-                static blockWidth = dimensionBasis/Math.max(Intersection.avenues, Intersection.streets);
+                static blockWidth = dimensionBasis/Math.max(Intersection.avenues+1, Intersection.streets+1);
 
                 static resetAll() {
+                    ctx.clearRect(0, 0, c.width, c.height);
                     for (let i of Intersection.city) {
                         for (let k of i) {
                             k.resetNoClear();
@@ -266,27 +268,84 @@
                     }
                 }
                 static resizeCity(newStreets, newAvenues) { 
-                    
+                    let oldStreets = Intersection.streets;
+                    let oldAvenues = Intersection.avenues;
+                    let oldCity = Intersection.cityBufferless;
+
+                    if (newStreets <= 0) newStreets = 1;
+                    if (newAvenues <= 0) newAvenues = 1;
+
+                    Intersection.streets = newStreets;
+                    Intersection.avenues = newAvenues;
+                    Intersection.blockWidth = dimensionBasis/Math.max(Intersection.avenues+1, Intersection.streets+1);
+
+                    c.width = Intersection.blockWidth*(newAvenues+1);
+                    c.height = Intersection.blockWidth*(newStreets+1);
+                    c.style.width = `${100*(newAvenues+1)/Math.max((newAvenues+1), (newStreets+1))}cqw`;
+                    c.style.height = `${100*(newStreets+1)/Math.max((newAvenues+1), (newStreets+1))}cqh`;
+
+                    let newCity = [];
+                    let bufferRow = [];
+                    for (let i = 0; i < newStreets; i++) {
+                        let street = [];
+                        for (let k = 0; k < newAvenues; k++) {
+                            if (i === newStreets-1) {
+                                bufferRow.push(new Intersection(k, newStreets, true));
+                            }
+                            street.push(new Intersection(k, i, false));
+                        }
+                        newCity.push(street);
+                    }
+                    bufferRow.push(new Intersection(bufferRow.length, newAvenues, true))
+
+                    let rowsToCheck = Math.min(newCity.length, oldCity.length);
+                    let colsToCheck = Math.min(newCity[0].length, oldCity[0].length);
+
+                    for (let i = 0; i < rowsToCheck; i++) {
+                        for (let k = 0; k < colsToCheck; k++) {
+                            newCity[i][k].horizontalWall = oldCity[i][k].horizontalWall;
+                            newCity[i][k].verticalWall = oldCity[i][k].verticalWall;
+                            newCity[i][k].numBeepers = oldCity[i][k].numBeepers;
+                        }
+                    }
+
+                    Intersection.cityBufferless = newCity;
+
+                    for (let i of newCity) {
+                        i.push(new Intersection(i.length, i[0].street, true))
+                    }
+                    newCity.push(bufferRow);
+                    Intersection.city = newCity;
+                    Intersection.resetAll();
+
                     console.log(Intersection.city);
                 }
                 // problem: canvas origin not in same place as karel's - FIXED
                 static initializeCity() {
                     Intersection.city = [];
+                    Intersection.cityBufferless = []
+
                     for (let i = 0; i < Intersection.streets+1; i++) {
                         let street = [];
+                        let bufferLess = [];
+
                         for (let k = 0; k < Intersection.avenues+1; k++) {
                             if (k === Intersection.avenues) {
                                 street.push(new Intersection(k, i, true));
                             } else {
                                 street.push(new Intersection(k, i, i === Intersection.streets ? true : false));
                             }
-
+                            if (k < Intersection.avenues) {
+                                bufferLess.push(new Intersection(k, i, false));
+                            }
                         }
+
                         Intersection.city.push(street);
+
+                        if (i < Intersection.streets) {
+                            Intersection.cityBufferless.push(bufferLess);
+                        }
                     }
-                    Intersection.avenues += 1;
-                    Intersection.streets += 1;
-                    Intersection.blockWidth = dimensionBasis/Math.max(Intersection.avenues, Intersection.streets)
                 }
                 constructor(avenue, street, buffer) { 
                     this.avenue = avenue;
@@ -296,21 +355,21 @@
                     this.numBeepers = 0;
                     this.horizontalWall = false;
                     this.verticalWall = false;
-                    this.coords = [avenue*Intersection.blockWidth, ((Intersection.streets-1)-street)*Intersection.blockWidth];
+                    this.coords = [avenue*Intersection.blockWidth, ((Intersection.streets)-street)*Intersection.blockWidth];
                     this.hasRobot = robot.getPose()[0] === this.avenue && robot.getPose()[1] === this.street;
                 }
                 // clear the intersection before drawing instead of overlapping
                 reset() {
                     ctx.clearRect(this.minX(), this.minY(), this.width, this.width);
 
-                    this.coords = [this.avenue*Intersection.blockWidth, ((Intersection.streets-1)-this.street)*Intersection.blockWidth];
+                    this.coords = [this.avenue*Intersection.blockWidth, ((Intersection.streets)-this.street)*Intersection.blockWidth];
                     this.width = Intersection.blockWidth;
                     this.hasRobot = robot.getPose()[0] === this.avenue && robot.getPose()[1] === this.street;
 
                     this.draw();
                 }
                 resetNoClear() {
-                    this.coords = [this.avenue*Intersection.blockWidth, ((Intersection.streets-1)-this.street)*Intersection.blockWidth];
+                    this.coords = [this.avenue*Intersection.blockWidth, ((Intersection.streets)-this.street)*Intersection.blockWidth];
                     this.width = Intersection.blockWidth;
                     this.hasRobot = robot.getPose()[0] === this.avenue && robot.getPose()[1] === this.street;
 
@@ -445,7 +504,7 @@
                 images = await loadImages(source);
                 Intersection.initializeCity();
                 Intersection.resetAll();
-                Intersection.resizeCity(10, 50); // make sure not to resize before initialized
+                //Intersection.resizeCity(3, 5); // make sure not to resize before initialized
                 Intersection.city[0][0].setContent("000");
                 Intersection.city[1][1].setContent("111");
                 console.log(Intersection.city[1][1].horizontalWall);
