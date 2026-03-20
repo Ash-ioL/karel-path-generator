@@ -286,16 +286,16 @@
 
                     // ctx.putImageData(imgData, top_corner[0], top_corner[1]);
 
-                    ctx.drawImage(img, top_corner[0], top_corner[1], area, area);
+                    // ctx.drawImage(img, top_corner[0], top_corner[1], area, area);
 
-                    ctx.globalCompositeOperation = "multiply";
-                    ctx.fillStyle = `rgb(${this.color[0]}, ${this.color[1]}, ${this.color[2]})`;
-                    ctx.fillRect(top_corner[0], top_corner[1], area, area);
+                    // ctx.globalCompositeOperation = "multiply";
+                    // ctx.fillStyle = `rgb(${this.color[0]}, ${this.color[1]}, ${this.color[2]})`;
+                    // ctx.fillRect(top_corner[0], top_corner[1], area, area);
 
-                    ctx.globalCompositeOperation = "destination-atop";
-                    ctx.drawImage(img, top_corner[0], top_corner[1], area, area);
+                    // ctx.globalCompositeOperation = "destination-atop";
+                    // ctx.drawImage(img, top_corner[0], top_corner[1], area, area);
 
-                    ctx.globalCompositeOperation = "source-over";
+                    // ctx.globalCompositeOperation = "source-over";
                 }
             }
 
