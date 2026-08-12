@@ -15,96 +15,57 @@ body {
     width: 100%;
     align-items: center;
     justify-content: center;
+    background-color: #121212;
+    color: white;
     /*background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.569) 0%, white 60%);*/
-}
-#alignment {
-    display:flex;
-    aspect-ratio: 3 / 2;
-    width: 100vw;
-    max-height: 100vh;
-    height: auto;
-    background-color: aquamarine;
-    container-type: size;
 }
 @media (orientation: portrait) {
     #alignment {
-        aspect-ratio: 4 / 5;
+        aspect-ratio: 1 / 1;
         height: 100vh;
         max-width: 100vw;
         width: auto;
     }
 }
 #canvas-container {
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.1);
     width: min(100cqh, 100cqw);
-    aspect-ratio: 1 / 1;
-    height: auto;
+    height: min(100cqh, 100cqw);
     container-type: size;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: min(4vw, 4vh);
+}
+#settings {
+    position: absolute;
+    width: auto;
+    height: auto;
 }
 canvas {
     background-color: #ffffff;
     /* border: 2px solid black; */
     width: 100cqw;
     height: 100cqh;
+    flex-shrink: 0;
+}
+
+
+
+/* new diff
+#alignment {
+    display flex
+    aspect-ratio: 3 / 2;
+    width: 100vw;
+    max-height: 100vh;
+    height: auto;
+    background-color: aquamarine;
+    container-type: size;
 }
 div#settings {
-    flex-grow: 1;
+    flex grow 1
 }
-/* old */
-@import "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap";
-html, body {
-    height: 100%;
-    margin: 0;
-    font-family: "inter";
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body {
-    display: flex;
-    min-height: 100vh;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    /*background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.569) 0%, white 60%);*/
-}
-#alignment {
-    aspect-ratio: 3 / 2;
-    width: 100vw;
-    max-height: 100vh;
-    height: auto;
-    background-color: aquamarine;
-    container-type: size;
-}
-@media (orientation: portrait) {
-    #alignment {
-        aspect-ratio: 4 / 5;
-        height: 100vh;
-        max-width: 100vw;
-        width: auto;
-    }
-}
-#canvas-container {
-    background-color: rgb(255, 255, 255);
-    width: min(100cqh, 100cqw);
-    aspect-ratio: 1 / 1;
-    height: auto;
-    container-type: size;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-canvas {
-    background-color: #ffffff;
-    /* border: 2px solid black; */
-    width: 100cqw;
-    height: 100cqh;
-}
+*/
 
 /* @media(width > height) {
 /* canvas {
@@ -116,3 +77,4 @@ canvas {
 /* @media (max-width: 600px) {
 
 } */
+

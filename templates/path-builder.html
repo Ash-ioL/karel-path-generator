@@ -9,19 +9,18 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css')}}">
     </head>
     <body>
-        <div id = "alignment">
-            <div id="canvas-container">
-                <canvas id="grid" width="1000" height="1000">
-                    Your browser does not support the HTML canvas tag.
-                </canvas>
-            </div>
-            <div id="settings">
-                <label for="color-selector">Select Robot Color</label>
-                <input type="color" id="color-selector">
-                <button id="copy-save">Copy Path</button>
-                <input type="text" id="load-save" name="load-save">
-                <button id="get-code">Get Code</button>
-            </div>
+        <div id="canvas-container">
+            <canvas id="grid" width="1000" height="1000">
+                Your browser does not support the HTML canvas tag '_'
+            </canvas>
+        </div>
+
+        <div id="settings">
+            <label for="color-selector">Select Robot Color</label>
+            <input type="color" id="color-selector">
+            <button id="copy-save">Copy Path</button>
+            <input type="text" id="load-save" name="load-save">
+            <button id="get-code">Get Code</button>
         </div>
 
         <script>
