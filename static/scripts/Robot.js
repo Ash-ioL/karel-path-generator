@@ -1,4 +1,5 @@
 import { Constants } from "./Constants.js";
+import { Intersection } from "./Intersection.js";
 
 export class Robot {
     static robots = [];
@@ -75,6 +76,9 @@ export class Robot {
         });
 
         Robot.robots.push(this);
+        if (Robot.currentRobot === null) {
+            Robot.currentRobot = this;
+        }
     }
     getPose() {
         return [this.x, this.y];

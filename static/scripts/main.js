@@ -1,7 +1,9 @@
+new Robot(0, 0, "e", 4, "red");
+
 import { Robot } from "./Robot.js";
 import { Intersection } from "./Intersection.js"
 import { Constants } from "./Constants.js";
-import controls from "./controls.js";
+import { controls } from "./controls.js";
 
 await Constants.imagesLoaded;
 
@@ -13,6 +15,3 @@ function run() {
     controls();
 }
 run();
-
-
-Robot.currentRobot = new Robot(0, 0, "e", 4, "red");

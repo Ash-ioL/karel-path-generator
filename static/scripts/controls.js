@@ -1,12 +1,11 @@
 import { Robot } from "./Robot.js";
 import { Constants } from "./Constants.js";
+import { Intersection } from "./Intersection.js";
 
 export function controls() {
     window.addEventListener("keydown", (e) => {
         let robot = Robot.currentRobot;
-        if (robot === null) {
-            robot = Robot.robots[0];
-        }
+        
         if (document.activeElement.tagName == "INPUT" || document.activeElement.tagName == "TEXTAREA") {
             return;
         }
@@ -45,7 +44,11 @@ export function controls() {
         if (key == "p") {
             console.log(robot.history);
         }
+        if (key == "m") {
+            Intersection.resetAll();
+        }
         console.log(`Key press detected: ${e.key}`);
+        console.log(robot.getPose());
     });
     Intersection.resetAll();
 };

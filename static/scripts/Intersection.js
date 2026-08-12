@@ -1,4 +1,5 @@
 import { Constants } from "./Constants.js";
+import { Robot } from "./Robot.js";
 
 export class Intersection {
     static avenues = 10;
@@ -145,7 +146,7 @@ export class Intersection {
         this.horizontalWall = false;
         this.verticalWall = false;
         this.coords = this.resetCoords();
-        this.hasRobot = robot.getPose()[0] === this.avenue && robot.getPose()[1] === this.street;
+        this.hasRobot = Robot.currentRobot != null && Robot.currentRobot.getPose()[0] === this.avenue && Robot.currentRobot.getPose()[1] === this.street;
     }
     // clear the intersection before drawing instead of overlapping
     reset() {
@@ -153,7 +154,7 @@ export class Intersection {
 
         this.coords = this.resetCoords();
         this.width = Intersection.blockWidth;
-        this.hasRobot = robot.getPose()[0] === this.avenue && robot.getPose()[1] === this.street;
+        this.hasRobot = Robot.currentrobot != null && Robot.currentRobot.getPose()[0] === this.avenue && Robot.currentRobot.getPose()[1] === this.street;
 
         this.draw();
     }
@@ -163,7 +164,7 @@ export class Intersection {
     resetNoClear() {
         this.coords = this.resetCoords();
         this.width = Intersection.blockWidth;
-        this.hasRobot = robot.getPose()[0] === this.avenue && robot.getPose()[1] === this.street;
+        this.hasRobot = Robot.currentRobot != null && Robot.currentRobot.getPose()[0] === this.avenue && Robot.currentRobot.getPose()[1] === this.street;
 
         this.draw();
     }
@@ -290,7 +291,7 @@ export class Intersection {
 
         // Draw the robot if robot is on its square
         if (this.hasRobot) {
-            robot.draw(center, this.width);
+            Robot.currentRobot.draw(center, this.width);
         }
     }
 }
