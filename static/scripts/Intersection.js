@@ -1,4 +1,4 @@
-import Constants from "./Constants.js";
+import { Constants } from "./Constants.js";
 
 export class Intersection {
     static avenues = 10;

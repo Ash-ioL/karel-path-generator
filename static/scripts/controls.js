@@ -1,5 +1,5 @@
-import Robot from "./Robot.js";
-import Constants from "./Constants.js";
+import { Robot } from "./Robot.js";
+import { Constants } from "./Constants.js";
 
 export function controls() {
     window.addEventListener("keydown", (e) => {

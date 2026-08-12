@@ -1,6 +1,6 @@
-import Robot from "./Robot.js";
-import Intersection from "./Intersection.js"
-import Constants from "./Constants.js";
+import { Robot } from "./Robot.js";
+import { Intersection } from "./Intersection.js"
+import { Constants } from "./Constants.js";
 import controls from "./controls.js";
 
 await Constants.imagesLoaded;
