@@ -48,7 +48,6 @@ export function controls() {
             Intersection.resetAll();
         }
         console.log(`Key press detected: ${e.key}`);
-        console.log(robot.getPose());
     });
     Intersection.resetAll();
 };

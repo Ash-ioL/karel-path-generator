@@ -205,9 +205,9 @@ export class Robot {
         this.resetIntersection(Intersection.city, 0, 0);
     }
     putBeeper() {
-        if (Intersection.city[robot.y][robot.x].buffer) return;
-        if (robot.numBeepers <= 0) return;
-        robot.numBeepers -= 1;
+        if (Intersection.city[this.y][this.x].buffer) return;
+        if (this.numBeepers <= 0) return;
+        this.numBeepers -= 1;
         Intersection.city[this.y][this.x].increaseBeeper(1);
         this.history.push("o");
         this.resetIntersection(Intersection.city, 0, 0);
