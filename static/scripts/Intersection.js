@@ -154,7 +154,7 @@ export class Intersection {
 
         this.coords = this.resetCoords();
         this.width = Intersection.blockWidth;
-        this.hasRobot = Robot.currentrobot != null && Robot.currentRobot.getPose()[0] === this.avenue && Robot.currentRobot.getPose()[1] === this.street;
+        this.hasRobot = Robot.currentRobot != null && Robot.currentRobot.getPose()[0] === this.avenue && Robot.currentRobot.getPose()[1] === this.street;
 
         this.draw();
     }
